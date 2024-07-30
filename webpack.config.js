@@ -26,6 +26,13 @@ module.exports = {
         },
       },
       {
+        test: /\.css$/i,
+        use: [
+          "style-loader",
+          "css-loader"
+        ]
+      },
+      {
         test: /\.less$/i,
         use: [
           // compiles Less to CSS
@@ -64,8 +71,6 @@ module.exports = {
       {
         context:['/**'],
         target: 'http://localhost:3001',
-        // target: 'http://[::1]:3001',
-        // test
         secure: false,
         changeOrigin: true
       },
@@ -84,4 +89,3 @@ module.exports = {
     }),
   ],
 };
-

@@ -140,10 +140,8 @@ function Chat() { // check is the user is login or not
                                       //Sign in = user is obj , signOut : user is  null
   return (
     <div className="chat">
-      <header>
 
-      </header>
-
+      <h1 style={{color:'white'}}>Hello from Chatting Room</h1>
       <section>
         {user ? <ChatRoom /> : <SignIn />} 
       </section>
