@@ -31,6 +31,11 @@ const HomeTopRight = () => {
 
     }
 
+    if (user) {
+        console.log('user.user_metadata.username: ', user.user_metadata.username);
+
+    }
+
 
     return (
         <div className="HomeTopRightWrapper">
@@ -47,6 +52,7 @@ const HomeTopRight = () => {
             </div>
             <div className="HomeTopRightProfileWrapper">
                 <button type="button" className="HomeTopRightMessages" onClick={() => {
+                    navigate(`/profile/${user.user_metadata.username}`)
                     navigate(`/profile/${user.user_metadata.username}`)
                 }}>            
                 {user === null ?

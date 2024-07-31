@@ -192,6 +192,7 @@ userController.getUserName = async (req, res, next) => {
 userController.saveBio = async (req, res, next) => {
   const { bio, username } = req.body;
   // console.log('bio: ', bio);
+  // console.log('bio: ', bio);
 
   try {
     const text = `
@@ -205,6 +206,7 @@ userController.saveBio = async (req, res, next) => {
     const result2 = await db.query(text2, params2);
 
     res.locals.bio = result2.rows[0].bio;
+    res.locals.bio = result2.rows[0].bio;
     // console.log('result2.rows[0].bio: ', result2.rows[0].bio);
     // const text = `UPDATE profile SET riot_account = $1 WHERE id = $2 RETURNING *;`;
     // const params = [riotData, userId];
@@ -212,6 +214,21 @@ userController.saveBio = async (req, res, next) => {
     return next();
   } catch (err) {
     return next('Error in userController.saveBio: ' + JSON.stringify(err));
+  }
+};
+
+userController.getProfData = async (req, res, next) => {
+  const { username } = req.body;
+
+  try {
+    const text = `SELECT users.pfp, profile.allgames, profile.bio FROM users JOIN profile on users.profile_id = profile.id WHERE users.username = $1`;
+    const params = [username];
+    const result = await db.query(text, params);
+
+    res.locals.profData = result.rows[0];
+    return next();
+  } catch (err) {
+    return next('Error in userController.getProfData: ' + JSON.stringify(err));
   }
 };
 
@@ -244,9 +261,11 @@ userController.getBio = async (req, res, next) => {
     // console.log('result2.rows[0]: ', result2.rows[0]);
     res.locals.bio = result2.rows[0];
     return next();
+    return next();
   } catch (err) {
     return next('Error in userController.getBio: ' + JSON.stringify(err));
   }
+};
 };
 
 userController.getFeedData = async (req, res, next) => {
@@ -255,7 +274,11 @@ userController.getFeedData = async (req, res, next) => {
     const text = `SELECT users.username, users.pfp, profile.allgames, profile.bio FROM users JOIN profile on users.profile_id = profile.id`;
     const params = [];
     const result = await db.query(text, params);
+    const text = `SELECT users.username, users.pfp, profile.allgames, profile.bio FROM users JOIN profile on users.profile_id = profile.id`;
+    const params = [];
+    const result = await db.query(text, params);
 
+    res.locals.feedData = result.rows;
     res.locals.feedData = result.rows;
     return next();
   } catch (err) {
