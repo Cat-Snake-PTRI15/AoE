@@ -69,6 +69,43 @@ userController.addUser = async (req, res, next) => {
   }
 };
 
+userController.updatePfp = async (req, res, next) => {
+  const { pfp, username } = req.body;
+  // console.log('in uC.updatePfp');
+  // console.log('pfp: ', pfp);
+  // console.log('username: ', username);
+
+  try {
+    const text = `UPDATE users SET pfp = $1 WHERE username = $2 RETURNING pfp`;
+    const params = [pfp, username];
+    const result = await db.query(text, params);
+
+    // console.log('in uC.updatePfp 2');
+
+    res.locals.pfp = result.rows[0].pfp;
+
+    // console.log('res.locals.pfp: ', res.locals.pfp);
+    return next();
+  } catch (err) {
+    return next('Error in userController.updatePfp: ' + JSON.stringify(err));
+  }
+};
+
+userController.getPfpPath = async (req, res, next) => {
+  const { username } = req.body;
+
+  try {
+    const text = `SELECT pfp FROM users WHERE username = $1`;
+    const params = [username];
+    const result = await db.query(text, params);
+    res.locals.pfp = result.rows[0].pfp;
+
+    return next();
+  } catch (err) {
+    return next('Error in userController.getPfpPath: ' + JSON.stringify(err));
+  }
+};
+
 userController.addGame = async (req, res, next) => {
   const { userId, game } = req.body;
   console.log('userId: ', userId);
@@ -110,6 +147,35 @@ userController.addGame = async (req, res, next) => {
     return next();
   } catch (err) {
     return next('Error in userController.addGame: ' + JSON.stringify(err));
+  }
+};
+
+userController.removeGame = async (req, res, next) => {
+  const { userId, game } = req.body;
+  try {
+    const text = `
+    SELECT profile_id FROM users WHERE supabase_id = $1`;
+    const params = [userId];
+    const result = await db.query(text, params);
+    // console.log('result.rows[0].profile_id: ', result.rows[0].profile_id);
+
+    const text2 = `
+    SELECT allgames FROM profile WHERE id = $1`;
+    const params2 = [result.rows[0].profile_id];
+    const result2 = await db.query(text2, params2);
+
+    // console.log('result2.rows[0].allgames: ', result2.rows[0].allgames);
+    let newArr = result2.rows[0].allgames.filter((e) => e !== game);
+    // console.log('newArr: ', newArr);
+    const text3 = `UPDATE profile SET allgames = $1 WHERE id = $2 RETURNING allgames`;
+    const params3 = [newArr, result.rows[0].profile_id];
+    const result3 = await db.query(text3, params3);
+
+    res.locals.allgames = result3.rows[0].allgames;
+
+    return next();
+  } catch (err) {
+    return next('Error in userController.removeGame: ' + JSON.stringify(err));
   }
 };
 
@@ -192,7 +258,6 @@ userController.getUserName = async (req, res, next) => {
 userController.saveBio = async (req, res, next) => {
   const { bio, username } = req.body;
   // console.log('bio: ', bio);
-  // console.log('bio: ', bio);
 
   try {
     const text = `
@@ -205,7 +270,6 @@ userController.saveBio = async (req, res, next) => {
     const params2 = [bio, result.rows[0].profile_id];
     const result2 = await db.query(text2, params2);
 
-    res.locals.bio = result2.rows[0].bio;
     res.locals.bio = result2.rows[0].bio;
     // console.log('result2.rows[0].bio: ', result2.rows[0].bio);
     // const text = `UPDATE profile SET riot_account = $1 WHERE id = $2 RETURNING *;`;
@@ -221,29 +285,41 @@ userController.getProfData = async (req, res, next) => {
   const { username } = req.body;
 
   try {
-    const text = `SELECT users.pfp, profile.allgames, profile.bio FROM users JOIN profile on users.profile_id = profile.id WHERE users.username = $1`;
+    const text = `SELECT users.pfp, profile.allgames, profile.bio, profile.location, profile.languages, profile.contact_info FROM users JOIN profile on users.profile_id = profile.id WHERE users.username = $1`;
     const params = [username];
     const result = await db.query(text, params);
 
     res.locals.profData = result.rows[0];
+
+    // console.log('res.locals.profData: ', res.locals.profData);
     return next();
   } catch (err) {
     return next('Error in userController.getProfData: ' + JSON.stringify(err));
   }
 };
 
-userController.getProfData = async (req, res, next) => {
-  const { username } = req.body;
+userController.saveEmail = async (req, res, next) => {
+  const { username, email } = req.body;
 
   try {
-    const text = `SELECT users.pfp, profile.allgames, profile.bio FROM users JOIN profile on users.profile_id = profile.id WHERE users.username = $1`;
+    const text = `
+    SELECT profile_id FROM users WHERE username = $1`;
     const params = [username];
     const result = await db.query(text, params);
+    // console.log('result.rows[0].profile_id: ', result.rows[0].profile_id);
 
-    res.locals.profData = result.rows[0];
+    const text2 = `UPDATE profile SET contact_info = $1 WHERE id = $2 RETURNING contact_info;`;
+    const params2 = [email, result.rows[0].profile_id];
+    const result2 = await db.query(text2, params2);
+
+    res.locals.email = result2.rows[0].contact_info;
+    // console.log('result2.rows[0].bio: ', result2.rows[0].bio);
+    // const text = `UPDATE profile SET riot_account = $1 WHERE id = $2 RETURNING *;`;
+    // const params = [riotData, userId];
+    // const result = await db.query(text, params);
     return next();
   } catch (err) {
-    return next('Error in userController.getProfData: ' + JSON.stringify(err));
+    return next('Error in userController.saveEmail: ' + JSON.stringify(err));
   }
 };
 
@@ -260,7 +336,6 @@ userController.getBio = async (req, res, next) => {
     const result2 = await db.query(text2, params2);
     // console.log('result2.rows[0]: ', result2.rows[0]);
     res.locals.bio = result2.rows[0];
-    return next();
     return next();
   } catch (err) {
     return next('Error in userController.getBio: ' + JSON.stringify(err));
@@ -347,6 +422,68 @@ userController.fetchUserById = async (userId) => {
   } catch (err) {
     console.error('Error fetching user by ID:', err);
     throw err;
+  }
+};
+
+// get user ID and use the ID to find friends
+userController.getUserId = async (req, res, next) => {
+  const { username } = req.body;
+  try {
+    const text = `SELECT id FROM users WHERE username = $1`;
+    const params = [username];
+    const result = await db.query(text, params);
+
+    if (result.rows.length === 0) {
+      return res.status(404).json({ error: 'User not found.' });
+    }
+
+    const userId = result.rows[0].id;
+    // console.log('User ID from backend: ', userId);
+    res.locals.userId = userId;
+    return next();
+  } catch (err) {
+    console.error('Error in getUserId middleware: ', err);
+    return res.status(500).send('Internal server error.');
+  }
+};
+
+// use user ID to look up friends
+userController.getFriends = async (req, res, next) => {
+  const { userId } = req.body;
+  try {
+    const text = `SELECT users.username FROM users 
+    INNER JOIN friends ON friends.friend_id = users.id 
+    WHERE friends.user_id = $1`;
+    const params = [userId];
+    const result = await db.query(text, params);
+    // console.log('result: ', result.rows);
+    res.locals.friendsList = result.rows;
+    return next();
+  } catch (err) {
+    console.error('Error in getFriends middleware: ', err);
+    return res.status(500).send('Internal server error.');
+  }
+};
+
+// use user ID to look up chat history
+userController.getChatHistory = async (req, res, next) => {
+  const { userId, selectedFriendId } = req.body;
+  try {
+    const text = `SELECT u1.username AS sender, u2.username AS receiver, m.message, m.date_time
+    FROM messages m
+    INNER JOIN users u1 ON m.sender_id = u1.id
+    INNER JOIN users u2 ON m.receiver_id = u2.id
+    WHERE (m.sender_id = $1 AND m.receiver_id = $2) OR
+    (m.sender_id = $2 AND m.receiver_id = $1)
+    ORDER BY m.date_time`;
+    const params = [userId, selectedFriendId];
+    const result = await db.query(text, params);
+    console.log('Query result: ', result.rows);
+    res.locals.chatHistory = result.rows;
+    return next();
+  } catch (err) {
+    console.error('Error in getChatHistory middleware: ', err);
+    return res.status(500).send('Internal server error.');
   }
 };
 
