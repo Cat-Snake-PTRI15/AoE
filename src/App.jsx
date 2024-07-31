@@ -13,7 +13,7 @@ import Chat from './pages/Chat.jsx';
 import Messages from './pages/Messages.jsx';
 import store from './redux/store';
 import SupabaseLogin from './pages/SupabaseLogin.jsx';
-import Messages from './pages/Messages.jsx';
+// import Messages from './pages/Messages.jsx';
 import Message1 from './pages/Message1.jsx'
 import './App.scss';
 

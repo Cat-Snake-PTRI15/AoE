@@ -1,7 +1,5 @@
 const express = require('express');
 const app = express();
-const port = process.env.PORT || 3001;
-
 const path = require('path');
 const cors = require('cors');
 const cookieParser = require('cookie-parser');
@@ -12,6 +10,7 @@ const authRouter = require('./oauth');
 const requestRouter = require('./request');
 const { Server } = require('socket.io');
 
+const port = process.env.PORT || 3001;
 const expressServer = app.listen(port, () =>
   console.log(`Listening on PORT ${port}`)
 );

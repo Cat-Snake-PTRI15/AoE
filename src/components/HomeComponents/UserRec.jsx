@@ -1,13 +1,9 @@
 import React from 'react';
-import React from 'react';
 import profPicFiller from '../../Assets/aoelogo3_kyler.png';
 // import profPicFiller from '../Assets/aoelogo2.png';
 import { useNavigate, Link } from 'react-router-dom';
-import { useNavigate, Link } from 'react-router-dom';
 
 const UserRec = (props) => {
-  const { username, pfp, allgames, bio } = props;
-  const navigate = useNavigate();
   const { username, pfp, allgames, bio } = props;
   const navigate = useNavigate();
   // console.log('username: ', username);
@@ -71,7 +67,7 @@ const UserRec = (props) => {
       </div>
 
     </div>
+    </div>
   )
 }
-
-export default UserRec
+export default UserRec;

@@ -83,6 +83,7 @@ input[type='file'] {
   font-size: 1rem;
   border: 1px solid #ddd;
   border-radius: 4px;
+}
 input[type='text'],
 input[type='password'],
 input[type='email'],
@@ -325,6 +326,7 @@ input[type='file'] {
   &::-webkit-scrollbar-thumb:hover {
     background: #1b1b1b;
   }
+}
 // img {
 //     width: 70px;kyler1
 // }
@@ -531,6 +533,7 @@ input[type='file'] {
 .userRec-Button2:hover {
   background-color: #161616;
   transform: scale(1.05);
+}
 .userRecBioWrapper {
   grid-column: 3/5;
   grid-row: 3;
@@ -551,6 +554,7 @@ input[type='file'] {
 .userRec-Button:active,
 .userRec-Button2:active {
   transform: scale(0.95);
+}
 .userRec-Button:active,
 .userRec-Button2:active {
   transform: scale(0.95);
@@ -608,7 +612,6 @@ input[type='file'] {
   /* Handle on hover */
   &::-webkit-scrollbar-thumb:hover {
     background: #1b1b1b;
-  }
   display: grid;
   grid-column: 1;
   grid-row: 2;
@@ -640,6 +643,7 @@ input[type='file'] {
   &::-webkit-scrollbar-thumb:hover {
     background: #1b1b1b;
   }
+}
 }
 
 .userRec-gameLogo {
@@ -713,17 +717,17 @@ input[type='file'] {
     &::-webkit-scrollbar {
       height: 10px;
     }
-  
+
     /* Track */
     &::-webkit-scrollbar-track {
       background: #262626;
     }
-  
+
     /* Handle */
     &::-webkit-scrollbar-thumb {
       background: #3c3c3c;
     }
-  
+
     /* Handle on hover */
     &::-webkit-scrollbar-thumb:hover {
       background: #1b1b1b;
@@ -738,17 +742,17 @@ input[type='file'] {
     &::-webkit-scrollbar {
       height: 10px;
     }
-  
+
     /* Track */
     &::-webkit-scrollbar-track {
       background: #262626;
     }
-  
+
     /* Handle */
     &::-webkit-scrollbar-thumb {
       background: #3c3c3c;
     }
-  
+
     /* Handle on hover */
     &::-webkit-scrollbar-thumb:hover {
       background: #1b1b1b;
@@ -1215,7 +1219,7 @@ input[type='file'] {
   /* Handle on hover */
   &::-webkit-scrollbar-thumb:hover {
     background: #1b1b1b;
-  }
+
   background-color: rgb(32, 32, 32);
   width: 100%;
   height: 60px;
@@ -1240,6 +1244,7 @@ input[type='file'] {
   &::-webkit-scrollbar-thumb:hover {
     background: #1b1b1b;
   }
+}
 }
 
 .rank-data-container {
@@ -1330,4 +1335,3 @@ input[type='file'] {
     transform: rotate(360deg);
   }
 }
-

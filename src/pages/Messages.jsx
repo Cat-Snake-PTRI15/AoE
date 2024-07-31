@@ -39,8 +39,6 @@ const Messages = () => {
 
     return () => {
       socket.disconnect();
-      clearTimeout(typingTimeoutRef.current);
-      console.log('Socket disconnected');
     };
   }, []);
 

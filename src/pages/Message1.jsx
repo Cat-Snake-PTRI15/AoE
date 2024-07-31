@@ -4,7 +4,7 @@ import { io } from 'socket.io-client';
 import FriendsList from '../components/FriendsList.jsx';
 import axios from "axios";
 import { useUser, useSupabaseClient } from "@supabase/auth-helpers-react";
-import "./Chat.css"
+// import "./Chat.css"
 
 const Message1 = () => {
   const user = useUser();
@@ -118,7 +118,7 @@ const Message1 = () => {
   };
 
   return (
-    <div className = "message-page">
+    <div className = "message-page" style={{ color: 'white', fontSize: '1rem', display:'flex', gap:'5rem'}}>
       <FriendsList className = "friend-list" style = {{ width: "100px", padding:"10px"}} />
       <div className = "chatBox">
         <h1>Game Tonight</h1>

@@ -266,7 +266,6 @@ userController.getBio = async (req, res, next) => {
     return next('Error in userController.getBio: ' + JSON.stringify(err));
   }
 };
-};
 
 userController.getFeedData = async (req, res, next) => {
   try {
@@ -274,11 +273,7 @@ userController.getFeedData = async (req, res, next) => {
     const text = `SELECT users.username, users.pfp, profile.allgames, profile.bio FROM users JOIN profile on users.profile_id = profile.id`;
     const params = [];
     const result = await db.query(text, params);
-    const text = `SELECT users.username, users.pfp, profile.allgames, profile.bio FROM users JOIN profile on users.profile_id = profile.id`;
-    const params = [];
-    const result = await db.query(text, params);
 
-    res.locals.feedData = result.rows;
     res.locals.feedData = result.rows;
     return next();
   } catch (err) {
